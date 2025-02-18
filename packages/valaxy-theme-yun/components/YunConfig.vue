@@ -1,24 +1,14 @@
 <script lang="ts" setup>
-import { useI18n } from 'vue-i18n'
-import { isDark, toggleDark } from '~/composables'
+import { useAppStore } from 'valaxy'
 
-const { t, availableLocales, locale } = useI18n()
-
-const toggleLocales = () => {
-  // change to some real logic
-  const locales = availableLocales
-  locale.value = locales[(locales.indexOf(locale.value) + 1) % locales.length]
-}
+// sidebar config
+const app = useAppStore()
 </script>
 
 <template>
   <div>
-    <button class="yun-icon-btn" :title="t('button.toggle_dark')" :style="{color: isDark ? '' : '#f1cb64'}" @click="toggleDark()">
-      <div i="ri-sun-line dark:ri-moon-line" />
-    </button>
+    <YunToggleDark />
 
-    <a class="yun-icon-btn" :title="t('button.toggle_langs')" style="color:var(--yun-c-text)" @click="toggleLocales">
-      <div i-ri-translate class="transition transform" :class="locale === 'en' ? 'rotate-y-180' : ''" />
-    </a>
+    <YunToggleLocale v-if="app.showToggleLocale" />
   </div>
 </template>

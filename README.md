@@ -1,6 +1,6 @@
-<p align="center">
-<h1><a href="https://valaxy.netlify.app">Valaxy</a></h1>
-</a>
+<h1 align="center">
+<a href="https://valaxy.site">Valaxy</a>
+</h1>
 
 <p align="center">
 🌌 Next Generation Static Blog Framework (Beta).
@@ -10,69 +10,66 @@
 🧪 Working in Progress
 </pre>
 
-[![NPM version](https://img.shields.io/npm/v/valaxy?color=0078E7)](https://www.npmjs.com/package/valaxy)
+<p align="center">
+<a href="https://www.npmjs.com/package/valaxy" rel="nofollow"><img src="https://img.shields.io/npm/v/valaxy?color=0078E7" alt="NPM version"></a>
+<a href="https://github.com/YunYouJun/valaxy/actions/workflows/release.yml"><img src="https://github.com/YunYouJun/valaxy/actions/workflows/release.yml/badge.svg" alt="Release"></a>
+<a href="https://discord.gg/nd3mPkU5j8" target="_blank">
+<img alt="Discord" src="https://img.shields.io/discord/752821465891733574?color=%234960ea&logo=discord">
+</a>
+</p>
 
-English (Todo) | [简体中文](./README.zh-CN.md)
-
-Demo: [valaxy.yyj.moe](https://valaxy.yyj.moe) (Default theme is valaxy-theme-yun)
+- **English** | [简体中文](./README.zh-CN.md)
+- [English Docs](https://valaxy.site/?lang=en) | [中文文档](https://valaxy.site/?lang=zh-CN) | [Docs for Beta](https://beta.valaxy.site)
+- [Demo](https://yun.valaxy.site): <small>with [valaxy-theme-yun](./packages/valaxy-theme-yun/)</small>
 
 ## Usage
 
-For a example, you can see [demo/yun](./demo/yun/) folder.
+### Try it Online
+
+[![StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/edit/valaxy)
+
+### Init Project Locally
+
+Just run the following command to init your blog:
 
 ```bash
-npm init valaxy
+# pnpm (recommended)
+pnpm create valaxy
+# npm
+# npm init valaxy
 # yarn
 # yarn create valaxy
-# pnpm
-# pnpm create valaxy
 ```
 
-English & Chinese Docs is coming!
-
-> Wait a moment...
-
-## Dev
-
-```bash
-git clone https://github.com/YunYouJun/valaxy
-cd valaxy
-
-pnpm i
-# esbuild watch valaxy cli & valaxy-theme-yun
-# and run demo
-pnpm dev
-```
-
-If you want to display info better in two terminal:
-
-You can:
-
-```bash
-# watch valaxy & valaxy-theme-yun
-pnpm dev:lib
-# open a new terminal to run demo
-pnpm demo
-```
+For a example, you can see [demo/yun](./demo/yun/) folder.
 
 ## Features
 
-- ⚡️ [vitesse](https://github.com/antfu/vitesse): Best Practices of Vue3
-- ☁️ Deploy on [Netlify](https://www.netlify.com/), zero-config
-- Todo
+- ⚡️ [Vue 3](https://github.com/vuejs/vue-next), [Vite 5](https://github.com/vitejs/vite), [pnpm](https://pnpm.js.org/), [ESBuild](https://github.com/evanw/esbuild) - born with fastness
+- 🔥 Hot Reload with Config & Markdown
+- 🔧 Type Tooltip for all config by `valaxy.config.ts`
+- 🗒 Extended Markdown Frontmatter
+- 🗂 File based routing via [unplugin-vue-router](https://github.com/posva/unplugin-vue-router)
+- 📦 Components auto importing via [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+- 🖨 Static-site generation (SSG) via [vite-ssg](https://github.com/antfu/vite-ssg) (SPA is OK!)
+- 🕸 RSS & Sitemap
+- 🎨 Free to use Tailwind CSS via [UnoCSS](https://github.com/antfu/unocss)
+- 🌍 [CSS i18n in One Page](https://valaxy.site/guide/i18n)
+- 🔍 [Use icons from any icon sets with classes](https://github.com/antfu/unocss/tree/main/packages/preset-icons) - [Icônes](https://icones.netlify.app/)
+- 👔 Extended Theme with [Layout system](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
+- ⚙️ Unit Testing with [Vitest](https://github.com/vitest-dev/vitest)
+- ☁️ Deploy zero-config
+  - [Netlify](https://www.netlify.com/) with `netlify.toml`
+  - [GitHub Pages](https://pages.github.com/) with `.github/workflows/gh-pages.yml` [GitHub Actions](https://github.com/features/actions)
+- ♻️ Use any vite plugins
+  - 📲 You can implement PWA by [vite-plugin-pwa](https://github.com/antfu/vite-plugin-pwa)
+- ...
 
-### Icons
+## Dev
 
-- [Iconify](https://iconify.design) - use icons from any icon sets [🔍Icônes](https://icones.netlify.app/)
-- [Pure CSS Icons via UnoCSS](https://github.com/antfu/unocss/tree/main/packages/preset-icons)
+Want to get involved in the development? Look [here](https://valaxy.site/dev).
 
-## Todo
-
-- [ ] A script to generate theme template.
-- [ ] github actions auto generate site from theme repo/npm
-- [ ] debug component
-- [ ] git timestamp for post without `date`
-- [ ] check port is existed & use new port
+Want to create your theme? Check [valaxy-theme-starter](https://github.com/YunYouJun/valaxy-theme-starter).
 
 ## Thanks
 
@@ -87,10 +84,10 @@ pnpm demo
 
 ## [Sponsors](https://sponsors.yunyoujun.cn)
 
-❤️ Thanks also to the following sponsors for their support.
+❤️ Special thanks to the following sponsors for their support.
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/YunYouJun/sponsors/public/sponsors.svg">
-    <img src='https://cdn.jsdelivr.net/gh/YunYouJun/sponsors/public/sponsors.svg'/>
+  <a href="https://sponsors.yunyoujun.cn">
+    <img src='https://fastly.jsdelivr.net/gh/YunYouJun/sponsors/public/sponsors.svg'/>
   </a>
 </p>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useThemeConfig } from 'valaxy'
+import { useThemeConfig } from '../composables'
 
 const themeConfig = useThemeConfig()
 
@@ -13,7 +13,8 @@ const sayFrom = ref('')
  */
 function fetchApiToSay() {
   const api = themeConfig.value.say.hitokoto.enable ? themeConfig.value.say.hitokoto.api : themeConfig.value.say.api
-  if (!api) return
+  if (!api)
+    return
 
   fetch(api)
     .then((res) => {
@@ -55,7 +56,7 @@ onMounted(() => {
 
 <template>
   <div class="say">
-    <span v-if="sayContent" class="say-content" :class="['animate-fade-in', 'animate-iteration-1']">{{ sayContent }}</span>
+    <span v-if="sayContent" class="say-content animate-fade-in animate-iteration-1">{{ sayContent }}</span>
     <span v-if="sayAuthor" class="say-author"> {{ sayAuthor }}</span>
     <span v-if="sayFrom" class="say-from">{{ sayFrom }}</span>
   </div>
@@ -63,14 +64,14 @@ onMounted(() => {
 
 <style lang="scss">
 .say {
-  color: var(--yun-c-text);
+  color: var(--va-c-text);
   display: block;
   text-align: center;
-  font-family: var(--yun-font-serif);
+  font-family: var(--va-font-serif);
   font-weight: bold;
   padding: 0.5rem;
-  border-top: var(--yun-border-width) solid var(--yun-c-text-light);
-  border-bottom: var(--yun-border-width) solid var(--yun-c-text-light);
+  border-top: var(--va-border-width) solid var(--va-c-text-light);
+  border-bottom: var(--va-border-width) solid var(--va-c-text-light);
 
   .say-content {
     display: block;

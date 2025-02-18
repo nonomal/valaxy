@@ -1,41 +1,44 @@
 <script lang="ts" setup>
-import { useCategory, usePostList, useTag } from 'valaxy'
+import { useCategories, useSiteStore, useTags } from 'valaxy'
 import { useI18n } from 'vue-i18n'
+import { useThemeConfig } from '../composables'
 
 const { t } = useI18n()
 
-const posts = usePostList()
-const categories = useCategory()
-const tags = useTag()
+const site = useSiteStore()
+
+const themeConfig = useThemeConfig()
+const categories = useCategories()
+const tags = useTags()
 </script>
 
 <template>
   <nav class="site-nav" text-xl mt-6>
-    <router-link class="site-link-item yun-icon-btn" to="/" :title="t('menu.home')">
+    <RouterLink class="site-link-item yun-icon-btn" to="/" :title="t('menu.home')">
       <div i-ri-home-4-line />
-    </router-link>
+    </RouterLink>
 
-    <router-link class="site-link-item" to="/archives/" :title="t('menu.archives')">
+    <RouterLink class="site-link-item" to="/archives/" :title="t('menu.archives')">
       <div class="icon" i-ri-archive-line />
-      <span class="count">{{ posts.length }}</span>
-    </router-link>
-    <router-link class="site-link-item" to="/categories/" :title="t('menu.categories')">
+      <span class="count">{{ site.postList.length }}</span>
+    </RouterLink>
+    <RouterLink class="site-link-item" to="/categories/" :title="t('menu.categories')">
       <div class="icon" i-ri-folder-2-line />
       <span class="count">{{ Array.from(categories.children).length }}</span>
-    </router-link>
-    <router-link class="site-link-item" to="/tags/" :title="t('menu.tags')">
+    </RouterLink>
+    <RouterLink class="site-link-item" to="/tags/" :title="t('menu.tags')">
       <div class="icon" i-ri-price-tag-3-line />
       <span class="count">{{ Array.from(tags).length }}</span>
-    </router-link>
+    </RouterLink>
 
-    <router-link class="site-link-item yun-icon-btn" to="/about" :title="t('button.about')">
-      <div i-ri-clipboard-line />
-    </router-link>
+    <AppLink class="site-link-item yun-icon-btn" :to="themeConfig.menu.custom.url" :title="t(themeConfig.menu.custom.title)">
+      <div :class="themeConfig.menu.custom.icon" />
+    </AppLink>
   </nav>
 </template>
 
 <style lang="scss">
-@use "~/styles/mixins" as *;
+@use "valaxy/client/styles/mixins/index.scss" as *;
 
 .site-nav {
   display: flex;
@@ -44,7 +47,6 @@ const tags = useTag()
   line-height: 1.5;
   white-space: nowrap;
   text-align: center;
-  margin-top: 1rem;
 }
 
 .site-link-item {
@@ -52,10 +54,8 @@ const tags = useTag()
   padding: 0 15px;
   align-items: center;
   border-left: 1px solid get-css-var('c-gray');
-
   flex-direction: column;
-
-  color: var(--yun-c-text);
+  color: var(--va-c-text);
 
   &:first-child, &:last-child {
     line-height: 1;
@@ -76,8 +76,8 @@ const tags = useTag()
   }
 
   .count {
-    color: var(--yun-c-text);
-    font-family: var(--yun-font-sans);
+    color: var(--va-c-text);
+    font-family: var(--va-font-sans);
     display: block;
     text-align: center;
     font-size: 1rem;
@@ -88,7 +88,7 @@ const tags = useTag()
     height: 1.5rem;
 
     &:hover {
-      color: var(--yun-c-primary-light);
+      color: var(--va-c-primary-light);
     }
   }
 }

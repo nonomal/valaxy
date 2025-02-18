@@ -3,6 +3,8 @@
 .vite-ssg-temp
 
 temp/
+# temp pages
+pages/temp/
 
 .DS_Store
 *.local
@@ -11,3 +13,20 @@ dist-ssr
 node_modules
 .idea/
 *.log
+
+components.d.ts
+
+# valaxy fuse
+public/valaxy-fuse-list.json
+
+# valaxy rss
+public/feed.xml
+
+# valaxy rss
+public/feed.json
+
+# valaxy rss
+public/atom.xml
+
+# rollup-plugin-visualizer
+stats.html

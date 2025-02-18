@@ -1,4 +1,5 @@
 # custom
+
 # add lock for ci
 # pnpm-lock.yaml
 package-lock.json
@@ -13,3 +14,13 @@ dist-ssr
 node_modules
 .idea/
 *.log
+
+components.d.ts
+
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# test
+valaxy-blog

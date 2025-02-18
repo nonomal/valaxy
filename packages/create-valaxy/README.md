@@ -7,7 +7,7 @@ Starter template generator for [valaxy](https://github.com/YunYouJun/valaxy).
 ## Usage
 
 ```bash
-npm init valaxy 
+npm init valaxy
 ```
 
 or
@@ -24,4 +24,6 @@ pnpm create valaxy
 
 ## FAQ
 
-Use `chalk@4` `execa@5` for cjs.
+### Valaxy Version < 0.18
+
+Use `execa@5` for cjs.

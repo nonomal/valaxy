@@ -1,21 +1,33 @@
 <script lang="ts" setup>
-import { useFrontmatter, useInvisibleElement, usePostList, useTags } from 'valaxy'
-import { useI18n } from 'vue-i18n'
+import { defineWebPage, useSchemaOrg } from '@unhead/schema-org'
+import { useFrontmatter, useInvisibleElement, usePostTitle, useSiteStore } from 'valaxy'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
+import { useThemeConfig, useYunTags } from '../composables'
+
+useSchemaOrg([
+  defineWebPage({
+    '@type': 'CollectionPage',
+  }),
+])
 
 const route = useRoute()
 const router = useRouter()
 
+const themeConfig = useThemeConfig()
+
 const { t } = useI18n()
 const frontmatter = useFrontmatter()
-const { tags, getTagStyle } = useTags()
+const { tags, getTagStyle } = useYunTags({
+  primary: themeConfig.value.colors.primary,
+})
 
-const postList = usePostList()
 const curTag = computed(() => route.query.tag as string || '')
+const site = useSiteStore()
 
 const posts = computed(() => {
-  const list = postList.value.filter((post) => {
+  const list = site.postList.filter((post) => {
     if (post.tags) {
       if (typeof post.tags === 'string')
         return post.tags === curTag.value
@@ -30,7 +42,7 @@ const posts = computed(() => {
 const collapse = ref()
 const { show } = useInvisibleElement(collapse)
 
-const displayTag = (tag: string) => {
+function displayTag(tag: string) {
   router.push({
     query: {
       tag,
@@ -40,44 +52,62 @@ const displayTag = (tag: string) => {
   show()
 }
 
+const title = usePostTitle(frontmatter)
+const tagArr = computed(() => Array.from(tags.value).sort())
+
+// use flex to fix `overflow-wrap: break-words;` not working in Safari
 </script>
 
 <template>
-  <YunBase>
-    <template #header>
-      <YunPageHeader
-        :title="frontmatter.title || t('menu.tags')"
-        :icon="frontmatter.icon || 'i-ri-tag-line'"
-        :color="frontmatter.color"
-      />
-    </template>
-    <template #content>
-      <div class="yun-text-light" text="center" p="2">
-        {{ t('counter.tags', Array.from(tags).length) }}
-      </div>
+  <YunLayoutWrapper>
+    <YunLayoutLeft />
 
-      <div text="center">
-        <span v-for="[key, tag] in Array.from(tags).sort()" :key="key" class="post-tag cursor-pointer" :style="getTagStyle(tag.count)" p="1" @click="displayTag(key.toString())">
-          #{{ key }}<span text="xs">[{{ tag.count }}]</span>
-        </span>
-      </div>
+    <RouterView v-slot="{ Component }">
+      <component :is="Component">
+        <template #main-header>
+          <YunPageHeader
+            :title="title || t('menu.tags')"
+            :icon="frontmatter.icon || 'i-ri-tag-line'"
+            :color="frontmatter.color"
+            :page-title-class="frontmatter.pageTitleClass"
+          />
+        </template>
+        <template #main-content>
+          <Transition
+            enter-active-class="animate-fade-in animate-duration-400"
+            appear
+          >
+            <div class="yun-text-light" text="center" p="2">
+              {{ t('counter.tags', tagArr.length) }}
+            </div>
+          </Transition>
 
-      <router-view />
-    </template>
+          <div class="justify-center items-end" flex="~ wrap" gap="1">
+            <YunLayoutPostTag
+              v-for="([key, tag], i) in tagArr"
+              :key="key"
+              :i="i"
+              :title="key"
+              :count="tag.count"
+              :style="getTagStyle(tag.count)"
+              @click="displayTag(key.toString())"
+            />
+          </div>
 
-    <YunCard v-if="curTag" ref="collapse" m="t-4" w="full">
-      <YunPageHeader m="t-4" :title="curTag" icon="i-ri-hashtag" />
-      <YunPostCollapse w="full" m="b-4" p="x-20 lt-sm:x-5" :posts="posts" />
-    </YunCard>
-  </YunBase>
+          <RouterView />
+        </template>
+
+        <template #main-nav-before>
+          <YunCard v-if="curTag" ref="collapse" m="t-4" w="full">
+            <YunPageHeader :title="curTag" icon="i-ri-hashtag" />
+            <YunPostCollapse w="full" m="b-4" p="x-20 lt-sm:x-5" :posts="posts" />
+          </YunCard>
+        </template>
+      </component>
+    </RouterView>
+
+    <YunLayoutRight />
+  </YunLayoutWrapper>
+
+  <YunFooter />
 </template>
-
-<style lang="scss">
-.post-tag {
-  color: var(--yun-tag-color);
-
-  &:hover {
-    color: var(--yun-c-primary);
-  }
-}
-</style>

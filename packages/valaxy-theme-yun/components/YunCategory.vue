@@ -1,39 +1,112 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import type { Category, ParentCategory, PostCategory } from 'valaxy'
+import type { CategoryList, Post } from 'valaxy'
+import { useInvisibleElement } from 'valaxy'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { useYunSpringAnimation } from '../composables/animation'
 
-defineProps<{
-  name: string
+const props = withDefaults(defineProps<{
+  i?: number
+  parentKey: string
   // to eliminate the warning
-  category: Category
+  category: Post | CategoryList
   level?: number
-  displayCategory: (category: string) => void
-}>()
 
-const showChild = ref(false)
+  /**
+   * collapse children
+   */
+  collapsable?: boolean
+}>(), {
+  collapsable: true,
+})
+
+const router = useRouter()
+
+const collapse = ref(props.collapsable)
 const { t } = useI18n()
+
+const postCollapseElRef = ref<HTMLElement>()
+const { show } = useInvisibleElement(postCollapseElRef)
+/**
+ * scroll to post collapse by category
+ * @param category
+ */
+function jumpToDisplayCategory(category: string) {
+  collapse.value = false
+
+  router.push({
+    query: {
+      category,
+    },
+  })
+
+  show()
+}
+
+onMounted(() => {
+  const postCollapseEl = document.querySelector('.post-collapse-container') as HTMLElement
+  if (postCollapseEl)
+    postCollapseElRef.value = postCollapseEl
+})
+
+const categoryRef = ref<HTMLElement>()
+if (props.level === 1) {
+  useYunSpringAnimation(categoryRef, {
+    i: props.i || 0,
+    y: 20,
+    duration: 200,
+  })
+}
 </script>
 
 <template>
-  <li v-if="category.total" class="category-list-item inline-flex items-center cursor-pointer">
-    <span class="folder-action inline-flex" @click="showChild = !showChild">
-      <div v-if="!showChild" i-ri-folder-add-line />
-      <div v-else style="color:var(--yun-c-primary)" i-ri-folder-reduce-line /></span>
-    <span class="category-name" m="l-1" @click="displayCategory(name)">
-      {{ name === 'Uncategorized' ? t('category.uncategorized') : name }} [{{ category.total }}]
+  <li
+    ref="categoryRef"
+    class="category-list-item inline-flex items-center cursor-pointer w-full gap-2 px-3 py-2 rounded"
+    hover="bg-black/5"
+  >
+    <span
+      class="folder-action inline-flex"
+      hover="text-$va-c-primary-lighter"
+      @click="collapse = !collapse"
+    >
+      <div v-if="collapse" i-ri-folder-add-line />
+      <div v-else class="text-$va-c-primary dark:text-$va-c-primary-lighter" i-ri-folder-reduce-line />
+    </span>
+    <span
+      class="category-name inline-flex items-center gap-2 w-full"
+      @click="jumpToDisplayCategory(parentKey)"
+    >
+      <span>
+        {{ category.name === 'Uncategorized' ? t('category.uncategorized') : category.name }}
+      </span>
+      <span class="rounded-full px-1.5 bg-black/5 shadow-sm op-60" text="xs">
+        {{ category.total }}
+      </span>
     </span>
   </li>
 
-  <template v-if="showChild">
-    <ul v-if="(category as PostCategory).posts">
-      <li v-for="post, i in (category as PostCategory).posts" :key="i" class="post-list-item" m="l-4">
-        <router-link v-if="post.title" :to="post.path" class="inline-flex items-center">
-          <div i-ri-file-text-line />
-          <span m="l-1" font="serif black">{{ post.title }}</span>
-        </router-link>
+  <Transition
+    enter-active-class="v-enter-active"
+    enter-from-class="v-enter-from"
+    leave-active-class="v-leave-active"
+    leave-to-class="v-leave-to"
+    :duration="{ enter: 200, leave: 0 }"
+  >
+    <ul v-if="!collapse">
+      <li
+        v-for="categoryItem, cI in category.children.values()"
+        :key="cI"
+        class="post-list-item text-$va-c-text" m="l-4"
+        hover="text-$va-c-primary-lighter"
+      >
+        <YunCategoryChildItem
+          :i="cI"
+          :category-item="categoryItem"
+          :parent-key="parentKey"
+        />
       </li>
     </ul>
-    <YunCategories v-else :categories="(category as ParentCategory).children" :display-category="displayCategory" />
-  </template>
+  </Transition>
 </template>

@@ -1,29 +1,30 @@
+<script lang="ts" setup>
+import { goDown } from '../utils'
+</script>
+
 <template>
-  <a class="go-down" aria-label="go-down" href="javascript:window.scrollTo(0, banner.clientHeight);">
-    <div i-ri-arrow-down-s-line inline-flex />
-  </a>
+  <button
+    class="go-down w-20 bottom-0 text-sm md:(bottom-2 text-40px)" aria-label="go-down"
+    @click="goDown"
+  >
+    <div i-ri-arrow-down-s-fill inline-flex />
+  </button>
 </template>
 
 <style lang="scss">
 .go-down {
   cursor: pointer;
-
   display: inline-flex;
   justify-content: center;
   align-items: center;
-
   position: absolute;
-  bottom: 1rem;
   z-index: var(--yun-z-go-down);
   animation: float 2s ease-in-out infinite;
-
-  font-size: 2.5rem;
-  color: var(--yun-c-primary);
-
-  transition: color var(--yun-transition-duration);
+  color: var(--va-c-text);
+  transition: color var(--va-transition-duration);
 
   &:hover {
-    color: rgba(var(--yun-c-primary-rgb), 0.6);
+    color: rgba(var(--va-c-primary-rgb), 0.6);
   }
 }
 
@@ -35,7 +36,7 @@
 
   50% {
     opacity: 0.8;
-    transform: translateY(-0.8rem);
+    transform: translateY(-0.3em);
   }
 
   100% {

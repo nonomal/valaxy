@@ -1,7 +1,13 @@
+<script setup lang="ts">
+// layout
+</script>
+
 <template>
-  <YunBase>
-    <template #content>
-      <router-view />
-    </template>
-  </YunBase>
+  <YunLayoutWrapper>
+    <YunLayoutLeft />
+    <RouterView />
+    <YunLayoutRight />
+  </YunLayoutWrapper>
+
+  <YunFooter />
 </template>

@@ -1,152 +1,112 @@
-import type { UserConfig } from 'valaxy'
-import type { ThemeUserConfig } from 'valaxy-theme-yun'
+import type { ThemeConfig } from 'valaxy-theme-yun'
+import { defineValaxyConfig } from 'valaxy'
 
-/**
- * User Config
- * do not use export const
- */
-const config: UserConfig<ThemeUserConfig> = {
-  lang: 'zh-CN',
-  title: 'Valaxy Theme Yun',
-  author: {
-    name: '云游君',
-  },
-  description: 'Valaxy Theme Yun Preview.',
-  social: [
-    {
-      name: 'RSS',
-      link: '/atom.xml',
-      icon: 'i-ri-rss-line',
-      color: 'orange',
-    },
-    {
-      name: 'QQ 群 1050458482',
-      link: 'https://qm.qq.com/cgi-bin/qm/qr?k=kZJzggTTCf4SpvEQ8lXWoi5ZjhAx0ILZ&jump_from=webapi',
-      icon: 'i-ri-qq-line',
-      color: '#12B7F5',
-    },
-    {
-      name: 'GitHub',
-      link: 'https://github.com/YunYouJun',
-      icon: 'i-ri-github-line',
-      color: '#6e5494',
-    },
-    {
-      name: '微博',
-      link: 'https://weibo.com/jizhideyunyoujun',
-      icon: 'i-ri-weibo-line',
-      color: '#E6162D',
-    },
-    {
-      name: '豆瓣',
-      link: 'https://www.douban.com/people/yunyoujun/',
-      icon: 'i-ri-douban-line',
-      color: '#007722',
-    },
-    {
-      name: '网易云音乐',
-      link: 'https://music.163.com/#/user/home?id=247102977',
-      icon: 'i-ri-netease-cloud-music-line',
-      color: '#C20C0C',
-    },
-    {
-      name: '知乎',
-      link: 'https://www.zhihu.com/people/yunyoujun/',
-      icon: 'i-ri-zhihu-line',
-      color: '#0084FF',
-    },
-    {
-      name: '哔哩哔哩',
-      link: 'https://space.bilibili.com/1579790',
-      icon: 'i-ri-bilibili-line',
-      color: '#FF8EB3',
-    },
-    {
-      name: '微信公众号',
-      link: 'https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/about/white-qrcode-and-search.jpg',
-      icon: 'i-ri-wechat-2-line',
-      color: '#1AAD19',
-    },
-    {
-      name: 'Twitter',
-      link: 'https://twitter.com/YunYouJun',
-      icon: 'i-ri-twitter-line',
-      color: '#1da1f2',
-    },
-    {
-      name: 'Telegram Channel',
-      link: 'https://t.me/elpsycn',
-      icon: 'i-ri-telegram-line',
-      color: '#0088CC',
-    },
-    {
-      name: 'E-Mail',
-      link: 'mailto:me@yunyoujun.cn',
-      icon: 'i-ri-mail-line',
-      color: '#8E71C1',
-    },
-    {
-      name: 'Travelling',
-      link: 'https://travellings.link',
-      icon: 'i-ri-train-line',
-      color: 'var(--yun-c-text)',
-    },
-  ],
+import { addonAlgolia } from 'valaxy-addon-algolia'
+import { addonBangumi } from 'valaxy-addon-bangumi'
+import { addonComponents } from 'valaxy-addon-components'
+import { addonLightGallery } from 'valaxy-addon-lightgallery'
+import { addonTest } from 'valaxy-addon-test'
 
-  search: {
-    algolia: {
-      enable: true,
-      appId: 'CJXXAGRCYN',
-      apiKey: 'ae1966d2aeab22bf9335679f45d2cd9a',
-      indexName: 'my-hexo-blog',
-    },
-  },
+// import { addonMeting } from 'valaxy-addon-meting'
+
+// import { addonTwikoo } from 'valaxy-addon-twikoo'
+
+const safelist = [
+  'i-ri-home-line',
+]
+
+export default defineValaxyConfig<ThemeConfig>({
+  devtools: true,
+  // site config see site.config.ts or write in siteConfig
+  // siteConfig: {},
 
   theme: 'yun',
+  // see theme.config.ts or write in themeConfig
+  // themeConfig in theme.config.ts
 
-  themeConfig: {
-    banner: {
-      enable: true,
-      title: '云游君的小站',
-    },
-
-    pages: [
-      {
-        name: '我的小伙伴们',
-        url: '/links/',
-        icon: 'i-ri-genderless-line',
-        color: 'dodgerblue',
-      },
-      {
-        name: '喜欢的女孩子',
-        url: '/girls/',
-        icon: 'i-ri-women-line',
-        color: 'hotpink',
-      },
-    ],
-
-    footer: {
-      since: 2016,
-      beian: {
-        enable: true,
-        icp: '苏ICP备17038157号',
-      },
-    },
+  build: {
+    ssgForPagination: true,
   },
 
   unocss: {
-    safelist: [
-      'i-ri-home-line',
+    safelist,
+  },
+
+  markdown: {
+    // default material-theme-palenight
+    // theme: 'material-theme-palenight',
+    theme: {
+      // light: 'material-theme-lighter',
+      light: 'github-light',
+      // dark: 'material-theme-darker',
+      dark: 'github-dark',
+    },
+
+    blocks: {
+      tip: {
+        icon: 'i-carbon-thumbs-up',
+        text: 'ヒント',
+        langs: {
+          'zh-CN': '提示',
+        },
+      },
+      warning: {
+        icon: 'i-carbon-warning-alt',
+        text: '注意',
+      },
+      danger: {
+        icon: 'i-carbon-warning',
+        text: '警告',
+      },
+      info: {
+        text: 'información',
+      },
+    },
+
+    codeTransformers: [
+      // We use `[!!code` in demo to prevent transformation, here we revert it back.
+      {
+        postprocess(code) {
+          return code.replace(/\[!!code/g, '[!code')
+        },
+      },
     ],
   },
-}
 
-/**
- * add your icon to safelist
- * if your theme is not yun, so you can add it by yourself
- */
-config.themeConfig?.pages?.forEach((item) => {
-  config.unocss?.safelist?.push(item?.icon)
+  addons: [
+    addonAlgolia({
+      appId: 'UVMHTMG1T5',
+      apiKey: '805f2584a8866388aa1631ff0348ddae',
+      indexName: 'valaxy',
+    }),
+    addonBangumi({
+      api: 'https://yi_xiao_jiu-bangumi.web.val.run',
+      bilibiliUid: '1579790',
+      bgmEnabled: false,
+      customCss: '.bbc-bangumi-title a { color: red; }',
+    }),
+    addonComponents(),
+
+    // comments
+    // addonWaline({
+    //   serverURL: 'https://waline.yunyoujun.cn',
+    //   pageview: true,
+    //   comment: true,
+    // }),
+
+    // addonTwikoo({
+    //   envId: 'https://twikoo.vercel.app',
+    // }),
+
+    addonLightGallery(),
+    // addonMeting({
+    //   global: true,
+    //   props: {
+    //     id: '2049540645',
+    //     server: 'netease',
+    //     type: 'song',
+    //   },
+    // }),
+    addonTest(),
+  ],
 })
-
-export default config
