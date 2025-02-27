@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import type { Categories } from 'valaxy'
+import { computed } from 'vue'
+
+import { useRoute } from 'vue-router'
 
 withDefaults(defineProps<{
   categories: Categories
@@ -7,39 +10,33 @@ withDefaults(defineProps<{
    * 当前层级
    */
   level?: number
-  displayCategory: (category: string) => void
+  collapsable?: boolean
 }>(), {
   level: 0,
+  collapsable: true,
+})
+
+const route = useRoute()
+const categoryList = computed(() => {
+  const c = route.query.category || ''
+  return Array.isArray(c) ? [c] : c.split('/')
 })
 </script>
 
 <template>
-  <ul v-for="category, key in Object.fromEntries(categories)" :key="key" class="category-list" m="l-4">
-    <YunCategory :name="key.toString()" :category="category" :level="level + 1" :display-category="displayCategory" />
-  </ul>
+  <div flex="~ col">
+    <ul
+      v-for="(category, i) in categories.values()"
+      :key="category.name"
+      class="category-list"
+    >
+      <YunCategory
+        :i="i"
+        :parent-key="category.name"
+        :category="category"
+        :level="level + 1"
+        :collapsable="!categoryList.includes(category.name)"
+      />
+    </ul>
+  </div>
 </template>
-
-<style lang="scss">
-.post-list-item {
-  a {
-    color: var(--yun-c-text);
-
-    &:hover {
-      color: var(--yun-c-primary);
-    }
-  }
-}
-
-.category-list-item {
-  .folder-action {
-    &:hover {
-      color: var(--yun-c-primary);
-    }
-  }
-  .category-name {
-    &:hover {
-      color: var(--yun-c-primary);
-    }
-  }
-}
-</style>

@@ -1,29 +1,47 @@
 {
   "name": "create-valaxy",
-  "version": "0.0.3",
-  "main": "index.js",
+  "type": "module",
+  "version": "0.22.13",
   "description": "Create Starter Template for Valaxy",
-  "homepage": "https://valaxy.yyj.moe",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/YunYouJun/valaxy"
-  },
   "author": {
     "email": "me@yunyoujun.cn",
     "name": "YunYouJun",
     "url": "https://www.yunyoujun.cn"
   },
   "funding": "https://github.com/sponsors/YunYouJun",
-  "bin": {
-    "create-valaxy": "index.js"
+  "homepage": "https://valaxy.site",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YunYouJun/valaxy/tree/main/packages/create-valaxy"
   },
+  "main": "bin/index.mjs",
+  "bin": {
+    "create-valaxy": "bin/index.mjs"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "template-*/**/*"
+  ],
   "engines": {
-    "node": ">=14.0.0"
+    "node": "^18.0.0 || >=20.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "prepublishOnly": "npm run build",
+    "release": "bumpp --no-commit --no-tag --no-push && pnpm publish --no-git-checks --tag beta",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "chalk": "4",
-    "execa": "5",
-    "minimist": "^1.2.6",
+    "execa": "9.0.2",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
     "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/minimist": "^1.2.5"
   }
 }

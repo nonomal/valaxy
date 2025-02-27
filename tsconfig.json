@@ -1,33 +1,49 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "jsx": "preserve",
+    "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "module": "ESNext",
-    "target": "es2016",
-    "lib": ["DOM", "ESNext"],
-    "strict": true,
-    "esModuleInterop": true,
-    "incremental": false,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client",
-      "vite-plugin-pages/client",
-      "vite-plugin-vue-layouts/client"
-    ],
+    "moduleResolution": "Bundler",
     "paths": {
-      "@/*": ["demo/yun/*"],
-      "~/*": ["packages/valaxy/src/client/*"],
-      "@valaxyjs/client/*": ["packages/valaxy/src/client/*"],
+      "~/*": ["demo/yun/*"],
+      "@valaxyjs/devtools": ["packages/devtools/src/index.ts"],
+      "@valaxyjs/*": ["packages/@valaxyjs/*/src/index.ts"],
+      "valaxy/client/*": ["packages/valaxy/client/*"],
+      "@valaxyjs/client/*": ["packages/valaxy/client/*"],
       "valaxy/package.json": ["packages/valaxy/package.json"],
-      "valaxy": ["packages/valaxy/src/index.ts"],
+      "valaxy": ["packages/valaxy/shim.ts"],
       "valaxy-theme-yun/*": ["packages/valaxy-theme-yun/*"],
-      "valaxy-theme-yun": ["packages/valaxy-theme-yun/index.ts"],
-      "@valaxyjs/core": ["packages/valaxy/src/core/index.ts"]
-    }
+      "valaxy-theme-yun": ["packages/valaxy-theme-yun/node/index.ts"],
+      "valaxy-addon-waline": ["packages/valaxy-addon-waline/client/index.ts"],
+      "valaxy-addon-twikoo": ["packages/valaxy-addon-twikoo/client/index.ts"]
+    },
+    "resolveJsonModule": true,
+    "types": [
+      "unplugin-vue-router/client",
+      "vitest",
+      "vite/client",
+      "vite-plugin-vue-layouts/client",
+      "@intlify/unplugin-vue-i18n/messages",
+      "@types/wicg-file-system-access"
+    ],
+    "allowJs": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
-  "exclude": ["dist", "node_modules", "cypress"]
+  "include": [
+    // for type check
+    "./*.ts",
+    "./test/*.ts",
+    "./packages/valaxy/shims.d.ts",
+    "./packages/**/*.d.ts",
+    "./packages/**/*.ts",
+    "./packages/**/*.vue"
+  ],
+  "exclude": ["**/dist/**", "node_modules", "cache"]
 }

@@ -1,4 +1,4 @@
-name: Demo
+name: Demo to Netlify
 
 on:
   push:
@@ -11,43 +11,41 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        os: [ubuntu-latest]
-      fail-fast: false
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+      - uses: actions/setup-node@v4
         with:
-          version: 6
+          node-version: lts/*
+          cache: pnpm
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org/
-          cache: "pnpm"
+      - name: Install
+        run: pnpm install
 
-      - run: pnpm install
       - name: 🌌 Build Valaxy Cli
         run: pnpm build
 
-      - name: 📖 pull yunyoujun.cn posts
-        run: |
-          git clone https://github.com/YunYouJun/yunyoujun.github.io
-          cp -rf yunyoujun.github.io/source/_posts/posts/* demo/yun/pages/posts
+      # - name: 📖 pull yunyoujun.cn posts
+      #   run: |
+      #     git clone -b valaxy https://github.com/YunYouJun/yunyoujun.github.io
+      #     cp -rf yunyoujun.github.io/pages/posts/* demo/yun/pages/posts
 
-      - name: ☁️ Build Yun Demo
-        run: pnpm run build -C demo/yun
+      - name: ☁️ Build Yun Demo (SSG)
+        run: pnpm run build:demo
 
-      # - name: Type Check
-      #   run: pnpm run typecheck
-
-      # - name: Unit Test
-      #   run: pnpm run test:unit
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v1.2
+        with:
+          publish-dir: ./demo/yun/dist
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: Deploy from GitHub Actions
+          enable-pull-request-comment: true
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1

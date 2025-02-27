@@ -1,27 +1,30 @@
-@use 'sass:map';
-@use '~/styles/mixins' as *;
-@use '~/styles/palette.scss' as *;
+@use "valaxy/client/styles/mixins/index.scss" as *;
 
 .post-card {
   position: relative;
-  max-width: 900px;
+  max-width: var(--yun-post-card-max-width);
 }
 
+.post-card-image {
+  position: relative;
+  max-width: var(--yun-post-card-max-width);
 
-.post-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @include mobile {
+    .post-card-info {
+      flex-direction: column;
+    }
 
-  .icon {
-    font-size: 1.4rem;
+    img {
+      width: 100%;
+    }
   }
 }
 
 .post-title-link {
   position: relative;
   padding: 0.7rem 1.2rem;
-  color: var(--card-c-primary, var(--yun-c-link));
+  color: var(--card-c-primary, var(--va-c-link));
+  font-weight: 900;
 
   .icon {
     width: 1.6rem;
@@ -29,8 +32,9 @@
     margin-right: 0.4rem;
   }
 
-  &::before, &::after {
-    content: '';
+  &::before,
+  &::after {
+    content: "";
     position: absolute;
     width: 10px;
     height: 10px;
@@ -54,33 +58,38 @@
     transform: translate3d(-10px, -10px, 0);
   }
 
-  &:hover::before, &:hover::after {
+  &:hover::before,
+  &:hover::after {
     opacity: 1;
     transform: translate3d(0, 0, 0);
   }
 }
 
-.post-top-icon {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  color: var(--yun-c-warning);
-  font-size: 1.2rem;
-}
-
 .post-link-btn,
 .markdown-body .post-link-btn {
-  background-color: var(--card-c-primary);
+  background-color: #111;
   line-height: 1.2;
   padding: 0.5rem 1rem;
   color: white;
   font-size: 14px;
-
   margin-top: -0.2rem;
+  transition: box-shadow var(--va-transition-duration);
 
-  transition: box-shadow var(--yun-transition-duration);
-
-  &:before {
+  &::before {
     content: none;
+  }
+}
+
+// category
+.post-category {
+  color: var(--va-c-text);
+}
+
+.post-tag {
+  white-space: nowrap;
+  color: var(--yun-tag-color);
+
+  &:hover {
+    color: var(--va-c-primary);
   }
 }

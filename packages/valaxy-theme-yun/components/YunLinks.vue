@@ -1,60 +1,39 @@
 <script lang="ts" setup>
+import type { LinkType } from '../types'
 import { useRandomData } from '../composables'
-import { onImgError } from '../utils'
-
-export interface LinkType {
-  avatar: string
-  name: string
-  url: string
-  color: string
-  blog: string
-  desc: string
-}
 
 const props = defineProps<{
-  links: LinkType[]
+  links: string | LinkType[]
   random: boolean
+  /**
+   * @description: 图片加载失败时显示的图片
+   */
+  errorImg?: string
 }>()
 
 const { data } = useRandomData(props.links, props.random)
 </script>
 
 <template>
-  <div class="links">
-    <ul class="link-items">
-      <li v-for="link, i in data" :key="i" class="link-item" :style="`--primary-color: ${link.color}`">
-        <a class="link-url" p="x-4 y-2" :href="link.url" :title="link.name" alt="portrait" rel="friend">
-          <div class="link-left">
-            <img class="link-avatar" w="16" h="16" loading="lazy" :src="link.avatar" :alt="link.name" :onError="onImgError">
-          </div>
-          <div class="link-info" m="l-2">
-            <div class="link-blog" font="serif black">{{ link.blog }}</div>
-            <div class="link-desc">{{ link.desc }}</div>
-          </div>
-        </a>
-      </li>
+  <div class="yun-links">
+    <ul class="yun-link-items" flex="center wrap">
+      <YunLinkItem
+        v-for="link, i in data"
+        :key="i"
+        :i="i" :link="link" :error-img="errorImg"
+      />
     </ul>
   </div>
 </template>
 
-<stye lang="scss">
-
-.link-item {
-  display: inline-flex;
-}
-
-.links {
-  .link-items {
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    flex-wrap: wrap;
-
+<style lang="scss">
+.yun-links {
+  .yun-link-items {
     padding-left: 0;
   }
 
-  .link-url {
-    --smc-primary: var(--primary-color);
+  .yun-link-url {
+    --smc-link-color: var(--primary-color);
 
     display: inline-flex;
     text-align: center;
@@ -71,7 +50,7 @@ const { data } = useRandomData(props.links, props.random)
       box-shadow: 0 2px 20px var(--primary-color, gray);
     }
 
-    .link {
+    .yun-link {
       &-left {
         line-height: 0;
       }
@@ -79,14 +58,13 @@ const { data } = useRandomData(props.links, props.random)
       &-avatar {
         margin: 0;
         display: inline-flex;
-        max-width: 100%;
         border-radius: 50%;
         background-color: #fff;
         border: 1px solid var(--primary-color, gray);
         transition: 0.5s;
 
         &:hover {
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0 20px rgb(0 0 0 / 0.1);
         }
       }
 
@@ -100,10 +78,10 @@ const { data } = useRandomData(props.links, props.random)
     }
   }
 
-  .link-info {
+  .yun-link-info {
     display: inline-flex;
     flex-direction: column;
     justify-content: center;
   }
 }
-</stye>
+</style>
